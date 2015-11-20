@@ -18,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.telephony.SmsManager;
 import java.util.ArrayList;
+import java.util.Random;
+import android.graphics.Color;
+import android.widget.RelativeLayout;
 
 /**
  * @author Jordan Burnett - Helped OH so much.
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     private TextView nbr;
     private ArrayList<String> randomMessage;
     private ArrayList<String> randomNumber;
-
+    private RelativeLayout background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity
         btn = (Button) findViewById(R.id.sendButton);
         txt = (TextView) findViewById(R.id.messageText);
         nbr = (TextView) findViewById(R.id.phone);
+        background = (RelativeLayout) findViewById(R.id.relativeLayout);
         this.randomMessage = new ArrayList<String>();
         this.randomNumber = new ArrayList<String>();
         setupListeners();
@@ -70,6 +74,17 @@ public class MainActivity extends AppCompatActivity
 
         this.randomNumber.add("8015603218");
         this.randomNumber.add("8018217021");
+        this.randomNumber.add("8014558567");
+        this.randomNumber.add("8016529112");
+    }
+
+    int randomColor()
+    {
+        Random r = new Random();
+        int red = r.nextInt(256);
+        int green = r.nextInt(256);
+        int blue = r.nextInt(256);
+        return Color.rgb(red, green, blue);
     }
 
     private String getRandomPhrase()
@@ -92,6 +107,22 @@ public class MainActivity extends AppCompatActivity
         return blankNumber;
     }
 
+    private void changeBackgroundColor()
+    {
+        int redColor;
+        int greenColor;
+        int blueColor;
+
+        redColor = (int) (Math.random() * 256);
+        greenColor = (int) (Math.random() * 256);
+        blueColor = (int) (Math.random() * 256);
+
+        background.setBackgroundColor(Color.rgb(redColor, greenColor, blueColor));
+    }
+
+    /**
+     * Causes the send button to send the text, and allows a random phrase and number to be generated if no message or number are given.
+     */
     private void setupListeners()
     {
         btn.setOnClickListener(new View.OnClickListener()
@@ -122,6 +153,8 @@ public class MainActivity extends AppCompatActivity
                     Toast.makeText(currentView.getContext(), "message was not sent", Toast.LENGTH_LONG).show();
                     Toast.makeText(currentView.getContext(), currentException.getMessage(), Toast.LENGTH_LONG).show();
                 }
+
+                changeBackgroundColor();
             }
         });
     }
